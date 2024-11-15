@@ -1,0 +1,191 @@
+Stock Market Index Forecasting
+Importing Modules:
+import pandas as pd import numpy as np import matplotlib.pyplot as plt import seaborn as sns
+Importing Datasets:
+import yfinance as yf from datetime import datetime end = datetime.now() start = datetime(end.year-20, end.month, end.day) stock = "GOOG" google_data = yf.download(stock, start, end) stock = "MSFT" microsoft_data = yf.download(stock, start, end) stock = "AAPL" apple_data = yf.download(stock, start, end)
+
+Inspecting Dataset:
+print("Alphabet Inc.(GOOGLE) STOCK PRICE\n") google_data.head()
+
+google_data.info()
+
+google_data.describe()
+
+google_data.isna().sum()
+
+Exploratory Data Analysis (EDA)
+# Plotting the Adjisted Close Price over Year plt.figure(figsize = (15,5)) google_data['Adj Close'].plot() plt.xlabel("years") plt.ylabel("Adj Close") plt.title("Adjusted Closing price of Google data")
+Text(0.5, 1.0, 'Adjusted Closing price of Google data')
+
+def plot_graph(figsize, values, column_name): plt.figure() values.plot(figsize = figsize) plt.xlabel("years") plt.ylabel(column_name) plt.title(f"{column_name} of Google data")
+google_data.columns
+MultiIndex([('Adj Close', 'GOOG'), ( 'Close', 'GOOG'), ( 'High', 'GOOG'), ( 'Low', 'GOOG'), ( 'Open', 'GOOG'), ( 'Volume', 'GOOG')], names=['Price', 'Ticker'])
+for column in google_data.columns: plot_graph((15,5),google_data[column], column)
+
+# Number of Working Days in a year for i in range(2004,2025): print(i,list(google_data.index.year).count(i))
+
+# Calculate the Moving Average(MA) google_data['MA_for_250_days'] = google_data['Adj Close'].rolling(250).mean()
+google_data['MA_for_250_days'][0:250].tail()
+
+plot_graph((15,5), google_data['MA_for_250_days'], 'MA_for_250_days')
+
+plot_graph((15,5), google_data[['Adj Close','MA_for_250_days']], 'MA_for_250_days')
+
+google_data['MA_for_100_days'] = google_data['Adj Close'].rolling(100).mean() plot_graph((15,5), google_data[['Adj Close','MA_for_100_days']], 'MA_for_100_days')
+
+plot_graph((15,5), google_data[['Adj Close','MA_for_100_days', 'MA_for_250_days']], 'MA')
+
+google_data['percentage_change_closeprice'] = google_data['Adj Close'].pct_change() google_data[['Adj Close','percentage_change_closeprice']].head()
+
+plot_graph((15,5), google_data['percentage_change_closeprice'], 'percentage_change')
+
+Adj_close_price = google_data[['Adj Close']] max(Adj_close_price.values),min(Adj_close_price.values)
+
+Microsoft Corporation(MSFT)
+Inspecting Dataset:
+print("Microsoft Corporation STOCK PRICE\n") microsoft_data.head()
+
+microsoft_data.info()
+
+microsoft_data.describe()
+
+# Plotting the Adjisted Close Price over Year plt.figure(figsize = (15,5)) microsoft_data['Adj Close'].plot() plt.xlabel("years") plt.ylabel("Adj Close") plt.title("Adjusted Closing price of Microsoft data")
+Text(0.5, 1.0, 'Adjusted Closing price of Microsoft data')
+
+def plot_graph(figsize, values, column_name): plt.figure() values.plot(figsize = figsize) plt.xlabel("years") plt.ylabel(column_name)
+microsoft_data.columns
+44
+MultiIndex([('Adj Close', 'MSFT'), ( 'Close', 'MSFT'), ( 'High', 'MSFT'), ( 'Low', 'MSFT'), ( 'Open', 'MSFT'), ( 'Volume', 'MSFT')], names=['Price', 'Ticker'])
+for column in microsoft_data.columns: plot_graph((15,5),microsoft_data[column], column)
+
+# Number of Working Days In a year for i in range(2004,2025): print(i,list(microsoft_data.index.year).count(i))
+
+# Calculate the Moving Average (MA) microsoft_data['MA_for_250_days'] = microsoft_data['Adj Close'].rolling(250).mean()
+microsoft_data['MA_for_250_days'][0:250].tail()
+
+plot_graph((15,5), microsoft_data['MA_for_250_days'], 'MA_for_250_days')
+
+plot_graph((15,5), microsoft_data[['Adj Close','MA_for_250_days']], 'MA_for_250_days')
+
+microsoft_data['MA_for_100_days'] = microsoft_data['Adj Close'].rolling(100).mean() plot_graph((15,5), microsoft_data[['Adj Close','MA_for_100_days']], 'MA_for_100_days')
+
+plot_graph((15,5), microsoft_data[['Adj Close','MA_for_100_days', 'MA_for_250_days']], 'MA')
+
+microsoft_data['percentage_change_closeprice'] = microsoft_data['Adj Close'].pct_change() microsoft_data[['Adj Close','percentage_change_closeprice']].head()
+
+plot_graph((15,5), microsoft_data['percentage_change_closeprice'], 'percentage_change')
+
+adj_close_price = microsoft_data[['Adj Close']] max(adj_close_price.values),min(adj_close_price.values)
+
+
+APPLE INC.
+Inspecting Dataset:
+print("APPLE Inc STOCK PRICE\n") apple_data.head()
+
+apple_data.info()
+
+apple_data.describe()
+
+apple_data.isna().sum()
+
+Exploratory Data Analysis (EDA)
+# Plotting the Adjisted Close Price over Year plt.figure(figsize = (15,5)) apple_data['Adj Close'].plot() plt.xlabel("years") plt.ylabel("Adj Close") plt.title("Adjusted Closing price of Apple data")
+Text(0.5, 1.0, 'Adjusted Closing price of Apple data')
+
+def plot_graph(figsize, values, column_name): plt.figure() values.plot(figsize = figsize) plt.xlabel("years") plt.ylabel(column_name)
+apple_data.columns
+MultiIndex([('Adj Close', 'AAPL'), ( 'Close', 'AAPL'), ( 'High', 'AAPL'), ( 'Low', 'AAPL'), ( 'Open', 'AAPL'), ( 'Volume', 'AAPL')], names=['Price', 'Ticker'])
+for column in apple_data.columns: plot_graph((15,5),apple_data[column], column)
+
+# Number of Working Days for i in range(2004,2025): print(i,list(apple_data.index.year).count(i))
+
+# Calculate the Moving Average (MA) apple_data['MA_for_250_days'] = apple_data['Adj Close'].rolling(250).mean()
+apple_data['MA_for_250_days'][0:250].tail()
+
+plot_graph((15,5), apple_data['MA_for_250_days'], 'MA_for_250_days')
+
+plot_graph((15,5), apple_data[['Adj Close','MA_for_250_days']], 'MA_for_250_days')
+
+apple_data['MA_for_100_days'] = apple_data['Adj Close'].rolling(100).mean() plot_graph((15,5), apple_data[['Adj Close','MA_for_100_days']], 'MA_for_100_days')
+
+plot_graph((15,5), apple_data[['Adj Close','MA_for_100_days', 'MA_for_250_days']], 'MA')
+
+apple_data['percentage_change_closeprice'] = apple_data['Adj Close'].pct_change() apple_data[['Adj Close','percentage_change_closeprice']].head()
+
+plot_graph((15,5), apple_data['percentage_change_closeprice'], 'percentage_change')
+
+adj_close_price = apple_data[['Adj Close']] max(adj_close_price.values),min(adj_close_price.values)
+
+
+Comparison
+plt.figure(figsize=(15, 5)) google_data['Adj Close'].plot(label='Google', legend=True) microsoft_data['Adj Close'].plot(label='Microsoft', legend=True) apple_data['Adj Close'].plot(label='Apple', legend=True) plt.title('Adjusted Close Price Comparison') plt.ylabel('Adjusted Close Price') plt.xlabel('years') plt.show()
+
+plt.figure(figsize=(15,5)) google_data['Close'].plot(label='Google', legend=True) microsoft_data['Close'].plot(label='Microsoft', legend=True) apple_data['Close'].plot(label='Apple', legend=True) plt.title('Close Price Comparison') plt.ylabel('Close Price') plt.xlabel('years')
+Text(0.5, 0, 'years')
+
+plt.figure(figsize=(15,5)) google_data['Open'].plot(label='Google', legend=True) microsoft_data['Open'].plot(label='Microsoft', legend=True) apple_data['Open'].plot(label='Apple', legend=True) plt.title('Open Price Comparison') plt.ylabel('Open Price') plt.xlabel('years')
+Text(0.5, 0, 'years')
+
+plt.figure(figsize=(15,5)) google_data['High'].plot(label='Google', legend=True) microsoft_data['High'].plot(label='Microsoft', legend=True) apple_data['High'].plot(label='Apple', legend=True) plt.title('High Price Comparison') plt.ylabel('High Price') plt.xlabel('years')
+Text(0.5, 0, 'years')
+
+plt.figure(figsize=(15,5)) google_data['Low'].plot(label='Google', legend=True) microsoft_data['Low'].plot(label='Microsoft', legend=True) apple_data['Low'].plot(label='Apple', legend=True) plt.title('Low Price Comparison') plt.ylabel('Low Price') plt.xlabel('years')
+
+plt.figure(figsize=(15,5)) google_data['Volume'].plot(label='Google', legend=True) microsoft_data['Volume'].plot(label='Microsoft', legend=True) apple_data['Volume'].plot(label='Apple', legend=True) plt.title('Volume Comparison') plt.ylabel('Volume') plt.xlabel('years')
+Text(0.5, 0, 'years')
+
+plt.figure(figsize=(15,5)) google_data['percentage_change_closeprice'].plot(label='Google', legend=True) microsoft_data['percentage_change_closeprice'].plot(label='Microsoft', legend=True) apple_data['percentage_change_closeprice'].plot(label='Apple', legend=True) plt.title('percentage_change_closeprice Comparison') plt.ylabel('percentage_change_closeprice') plt.xlabel('years')
+Text(0.5, 0, 'years')
+
+plt.figure(figsize=(15,5)) google_data['MA_for_250_days'].plot(label='Google', legend=True) microsoft_data['MA_for_250_days'].plot(label='Microsoft', legend=True) apple_data['MA_for_250_days'].plot(label='Apple', legend=True) plt.title('MA_for_250_days Comparison') plt.ylabel('MA_for_250_days')
+Text(0, 0.5, 'MA_for_250_days')
+
+plt.figure(figsize=(15,5)) google_data['MA_for_100_days'].plot(label='Google', legend=True) microsoft_data['MA_for_100_days'].plot(label='Microsoft', legend=True) apple_data['MA_for_100_days'].plot(label='Apple', legend=True) plt.title('MA_for_100_days Comparison') plt.ylabel('MA_for_100_days')
+Text(0, 0.5, 'MA_for_100_days')
+
+
+Machine Learning Algorithms:-
+ARIMA Model:
+import pandas as pd import matplotlib.pyplot as plt from statsmodels.tsa.arima.model import ARIMA from sklearn.metrics import mean_squared_error # Function to train and forecast using ARIMA for individual datasets def arima_forecast(stock_data, stock_name, order=(5, 1, 0)): # Use the 'Adj Close' column for ARIMA forecasting adj_close_prices = stock_data['Adj Close'] # Split the data into training and testing sets split_ratio = 0.8 split_index = int(len(adj_close_prices) * split_ratio) train_data = adj_close_prices[:split_index] test_data = adj_close_prices[split_index:] # Train the ARIMA model model = ARIMA(train_data, order=order) model_fit = model.fit() # Summary of the model print(f"ARIMA Model Summary for {stock_name}:") print(model_fit.summary()) # Forecast the test data period forecast = model_fit.forecast(steps=len(test_data)) # Calculate and print the Mean Squared Error (MSE) arima_mse = mean_squared_error(test_data, forecast) print(f'ARIMA Mean Squared Error: {arima_mse}') # Plot the results plt.figure(figsize=(12, 6)) plt.plot(train_data, label='Training Data') plt.plot(test_data, label='Actual Data') plt.plot(forecast, label='Forecast', color='red') plt.title(f'{stock_name} Stock Forecast') plt.xlabel('Date') plt.ylabel('Adjusted Close Price') plt.legend() plt.show()
+65
+# Forecast for Google arima_forecast(google_data, 'Google') # Forecast for Microsoft arima_forecast(microsoft_data, 'Microsoft') # Forecast for Apple arima_forecast(apple_data, 'Apple')
+/usr/local/lib/python3.10/dist-packages/statsmodels/tsa/base/tsa_model.py:473: ValueWarning: A date index has been provided, but it has no associated frequency information and so will be ignored when e.g. forecasting. self._init_dates(dates, freq) /usr/local/lib/python3.10/dist-packages/statsmodels/tsa/base/tsa_model.py:473: ValueWarning: A date index has been provided, but it has no associated frequency information and so will be ignored when e.g. forecasting. self._init_dates(dates, freq) /usr/local/lib/python3.10/dist-packages/statsmodels/tsa/base/tsa_model.py:473: ValueWarning: A date index has been provided, but it has no associated frequency information and so will be ignored when e.g. forecasting. self._init_dates(dates, freq)
+
+
+Future Pridiction For the Next 2 Years
+# Function to train and forecast using ARIMA for future 2 Years def arima_forecast(stock_data, stock_name, order=(5, 1, 0), forecast_days=730): # Use the 'Adj Close' column for ARIMA forecasting adj_close_prices = stock_data['Adj Close'] # Train the ARIMA model model = ARIMA(adj_close_prices, order=order) model_fit = model.fit() # Forecast the future stock prices for the next 2 Years (approximately 730 days) future_forecast = model_fit.forecast(steps=forecast_days) # Plot the actual data and future forecast plt.figure(figsize=(12, 6)) plt.plot(adj_close_prices, label='Actual Data') plt.plot(pd.date_range(start=adj_close_prices.index[-1], periods=forecast_days), future_forecast, label='Future Forecast', color='green') plt.title(f'Future Stock Price Forecast for {stock_name} - 2 Years') plt.xlabel('Date') plt.ylabel('Adjusted Close Price') plt.legend() plt.show() # Forecast for Google (2 years) arima_forecast(google_data, 'Google') # Forecast for Microsoft (2 Years) arima_forecast(microsoft_data, 'Microsoft') # Forecast for Apple (2 Years) arima_forecast(apple_data, 'Apple')
+
+
+XGBoost Regressor :
+import numpy as np import pandas as pd from sklearn.model_selection import train_test_split from sklearn.metrics import mean_squared_error from xgboost import XGBRegressor import matplotlib.pyplot as plt
+# Prepare data for XGBoost def prepare_data(stock_data, n_lag=5): X, y = [], [] # Get the values of 'Adj Close' as a NumPy array adj_close_values = stock_data['Adj Close'].values for i in range(n_lag, len(adj_close_values)): X.append(adj_close_values[i-n_lag:i]) y.append(adj_close_values[i]) # Convert X and y to NumPy arrays and reshape X to ensure it's 2D X, y = np.array(X), np.array(y) X = X.reshape(X.shape[0], X.shape[1]) # Ensure X is a 2D array return X, y # XGBoost model function def xgboost_forecast(stock_data, stock_name, n_lag=5): X, y = prepare_data(stock_data, n_lag) # Split the data into training and test sets X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle=False) # Create and train the XGBoost model xgb_model = XGBRegressor(n_estimators=1000, random_state=42) xgb_model.fit(X_train, y_train) # Make predictions predictions = xgb_model.predict(X_test) # Plot the results plt.figure(figsize=(12, 6)) plt.plot(np.arange(len(y_test)), y_test, label='Actual Data') plt.plot(np.arange(len(predictions)), predictions, label='Predicted Data', color='red') plt.title(f'{stock_name} Stock Prediction using XGBoost') plt.xlabel('Time') plt.ylabel('Adjusted Close Price') plt.legend() plt.show() # Calculate and print RMSE rmse = np.sqrt(mean_squared_error(y_test, predictions)) print(f'{stock_name} RMSE: {rmse}') # Example usage with stock data # Assuming google_data, microsoft_data, apple_data are your DataFrames with 'Adj Close' columns xgboost_forecast(google_data, 'Google') xgboost_forecast(microsoft_data, 'Microsoft') xgboost_forecast(apple_data, 'Apple')
+
+
+
+Future Pridiction For the Next 2 Years
+# Prepare data for XGBoost def prepare_data(stock_data, n_lag=5): X, y = [], [] # Get the values of 'Adj Close' as a NumPy array adj_close_values = stock_data['Adj Close'].values for i in range(n_lag, len(adj_close_values)): X.append(adj_close_values[i-n_lag:i]) y.append(adj_close_values[i]) # Convert X and y to NumPy arrays and reshape X to ensure it's 2D X, y = np.array(X), np.array(y) X = X.reshape(X.shape[0], X.shape[1]) # Ensure X is a 2D array return X, y
+# Function to forecast future prices for the next 2 years (504 trading days) def xgboost_forecast(stock_data, stock_name, n_lag=5, forecast_days=504): X, y = prepare_data(stock_data, n_lag) # Train the model on the entire dataset xgb_model = XGBRegressor(n_estimators=1000, random_state=42) xgb_model.fit(X, y) # Start with the last known data point last_data = X[-1].reshape(1, -1) # Predict future prices future_forecast = [] for _ in range(forecast_days): next_pred = xgb_model.predict(last_data)[0] future_forecast.append(next_pred) # Update last_data by removing the first value and appending the new prediction last_data = np.append(last_data[:, 1:], [[next_pred]], axis=1) # Generate future dates for plotting future_dates = pd.date_range(start=stock_data.index[-1] + pd.Timedelta(days=1), periods=forecast_days, freq='B') # Plot the results plt.figure(figsize=(12, 6)) plt.plot(stock_data.index, stock_data['Adj Close'], label='Actual Data') plt.plot(future_dates, future_forecast, label='Future Forecast', color='green') plt.title(f'{stock_name} Stock Forecast for the Next 2 Years (XGBoost)') plt.xlabel('Date') plt.ylabel('Adjusted Close Price') plt.legend() plt.show() # Run XGBoost forecast for all datasets (Google, Microsoft, Apple) xgboost_forecast(google_data, 'Google') xgboost_forecast(microsoft_data, 'Microsoft') xgboost_forecast(apple_data, 'Apple')
+
+
+
+Deep Learning Algorithms:-
+Long Short-Term Memory (LSTM):
+from sklearn.preprocessing import MinMaxScaler from tensorflow.keras.models import Sequential from tensorflow.keras.layers import LSTM, Dense, Dropout
+# Prepare data for LSTM def prepare_data_lstm(data, time_step=60): X, y = [], [] for i in range(time_step, len(data)): X.append(data[i-time_step:i, 0]) y.append(data[i, 0]) return np.array(X), np.array(y) # LSTM model function def lstm_forecast(stock_data, stock_name, time_step=60): # Scale the data scaler = MinMaxScaler(feature_range=(0, 1)) scaled_data = scaler.fit_transform(stock_data['Adj Close'].values.reshape(-1, 1)) # Prepare data X, y = prepare_data_lstm(scaled_data, time_step) X = np.reshape(X, (X.shape[0], X.shape[1], 1)) # Split the data into training and test sets split = int(0.8 * len(X)) X_train, y_train = X[:split], y[:split] X_test, y_test = X[split:], y[split:] # Build the LSTM model model = Sequential() model.add(LSTM(units=50, return_sequences=True, input_shape=(X_train.shape[1], 1))) model.add(Dropout(0.2)) model.add(LSTM(units=50, return_sequences=False)) model.add(Dropout(0.2)) model.add(Dense(units=1)) # Compile the model model.compile(optimizer='adam', loss='mean_squared_error') # Train the model model.fit(X_train, y_train, epochs=20, batch_size=32) # Make predictions predictions = model.predict(X_test) predictions = scaler.inverse_transform(predictions) # Calculate RMSE rmse = np.sqrt(mean_squared_error(y_test, predictions)) print(f'{stock_name} RMSE: {rmse}') # Plot the results plt.figure(figsize=(12, 6)) plt.plot(stock_data['Adj Close'].values[split:], label='Actual Data') plt.plot(predictions, label='Predicted Data', color='red') plt.title(f'{stock_name} Stock Prediction using LSTM') plt.xlabel('Date')
+76
+plt.ylabel('Adjusted Close Price') plt.legend() plt.show() # Assuming you have your stock data in DataFrames: google_data, microsoft_data, apple_data # Run LSTM for all datasets lstm_forecast(google_data, 'Google') lstm_forecast(microsoft_data, 'Microsoft') lstm_forecast(apple_data, 'Apple')
+
+Future Pridiction For the Next 2 Years
+# Prepare data for LSTM def prepare_data_lstm(data, time_step=60): X, y = [], [] for i in range(time_step, len(data)): X.append(data[i-time_step:i, 0]) y.append(data[i, 0]) return np.array(X), np.array(y) # Function to forecast future prices for the next 2 years (504 trading days) def lstm_forecast(stock_data, stock_name, time_step=60, forecast_days=504): # Scale the data scaler = MinMaxScaler(feature_range=(0, 1)) scaled_data = scaler.fit_transform(stock_data['Adj Close'].values.reshape(-1, 1)) # Prepare data X, y = prepare_data_lstm(scaled_data, time_step) X = np.reshape(X, (X.shape[0], X.shape[1], 1)) # Split the data into training and test sets split = int(0.8 * len(X)) X_train, y_train = X[:split], y[:split] # Build the LSTM model model = Sequential() model.add(LSTM(units=50, return_sequences=True, input_shape=(X_train.shape[1], 1))) model.add(Dropout(0.2)) model.add(LSTM(units=50, return_sequences=False)) model.add(Dropout(0.2)) model.add(Dense(units=1))
+78
+# Compile the model model.compile(optimizer='adam', loss='mean_squared_error') # Train the model model.fit(X_train, y_train, epochs=20, batch_size=32) # Start with the last known data point (time_step sequence) last_sequence = scaled_data[-time_step:] last_sequence = np.reshape(last_sequence, (1, time_step, 1)) # Predict future prices future_forecast = [] for _ in range(forecast_days): next_pred = model.predict(last_sequence)[0][0] future_forecast.append(next_pred) # Update last_sequence by removing the first value and appending the new prediction # Changed [[next_pred]] to np.array([next_pred]).reshape(1, 1, 1) to match dimensions last_sequence = np.append(last_sequence[:, 1:, :], np.array([next_pred]).reshape(1, 1, 1), axis=1) # Inverse scale the predictions back to original values future_forecast = scaler.inverse_transform(np.array(future_forecast).reshape(-1, 1)) # Generate future dates for plotting # Changed periods to forecast_days to generate the correct number of dates future_dates = pd.date_range(start=stock_data.index[-1], periods=forecast_days) # Plot the results plt.figure(figsize=(12, 6)) plt.plot(stock_data['Adj Close'], label='Actual Data') plt.plot(future_dates, future_forecast, label='Future Forecast', color='green') plt.title(f'{stock_name} Stock Forecast for the Next 2 Years (LSTM)') plt.xlabel('Date') plt.ylabel('Adjusted Close Price') plt.legend() plt.show() # Run LSTM forecast for all datasets (Google, Microsoft, Apple) lstm_forecast(google_data, 'Google') lstm_forecast(microsoft_data, 'Microsoft') lstm_forecast(apple_data, 'Apple')
+
+
+Model Accuracy Comparison :
+from sklearn.metrics import mean_squared_error, mean_absolute_error from sklearn.preprocessing import MinMaxScaler import numpy as np import pandas as pd import seaborn as sns import matplotlib.pyplot as plt from statsmodels.tsa.arima.model import ARIMA from tensorflow.keras.models import Sequential from tensorflow.keras.layers import LSTM, Dense, Dropout from xgboost import XGBRegressor from sklearn.model_selection import train_test_split # Evaluation Metrics Function (including MAPE) def evaluate_model_performance(test_data, predictions, model_name, company_name): mse = mean_squared_error(test_data, predictions) mae = mean_absolute_error(test_data, predictions) rmse = np.sqrt(mse) mape = np.mean(np.abs((test_data - predictions) / test_data)) * 100 print(f'{company_name} - {model_name} Performance:') print(f'Mean Squared Error (MSE): {mse}') print(f'Mean Absolute Error (MAE): {mae}') print(f'Root Mean Squared Error (RMSE): {rmse}') print(f'Mean Absolute Percentage Error (MAPE): {mape}%') print('-' * 50) return {"MSE": mse, "MAE": mae, "RMSE": rmse, "MAPE": mape} # Prepare LSTM data function def prepare_data_lstm(data, time_step=60): X, y = [], [] for i in range(time_step, len(data)): X.append(data[i-time_step:i, 0]) y.append(data[i, 0]) return np.array(X), np.array(y) # List of companies and their corresponding data companies = { "Google": google_data, "Microsoft": microsoft_data, "Apple": apple_data } # Dictionary to store performance metrics for each company performance_metrics = {} # Evaluate Models for Each Company for company, data in companies.items(): # Split the data for ARIMA adj_close_prices = data['Adj Close'] split_index = int(len(adj_close_prices) * 0.8) train_data = adj_close_prices[:split_index] test_data = adj_close_prices[split_index:] # Evaluate ARIMA Model arima_model = ARIMA(train_data, order=(5, 1, 0)) arima_fit = arima_model.fit() arima_forecast = arima_fit.forecast(steps=len(test_data)) arima_metrics = evaluate_model_performance(test_data, arima_forecast, "ARIMA", company)
+
+# Store performance metrics performance_metrics[company] = {"ARIMA": arima_metrics} # Evaluate XGBoost Model X, y = prepare_data(data, n_lag=5) X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle=False) xgb_model = XGBRegressor(n_estimators=1000) xgb_model.fit(X_train, y_train) xgb_predictions = xgb_model.predict(X_test) xgb_metrics = evaluate_model_performance(y_test, xgb_predictions, "XGBoost", company) # Add to performance metrics performance_metrics[company]["XGBoost"] = xgb_metrics # Evaluate LSTM Model scaler = MinMaxScaler(feature_range=(0, 1)) scaled_data = scaler.fit_transform(data['Adj Close'].values.reshape(-1, 1)) X, y = prepare_data_lstm(scaled_data, time_step=60) X = np.reshape(X, (X.shape[0], X.shape[1], 1)) split = int(0.8 * len(X)) X_train, y_train = X[:split], y[:split] X_test, y_test = X[split:], y[split:] lstm_model = Sequential() lstm_model.add(LSTM(units=50, return_sequences=True, input_shape=(X_train.shape[1], 1))) lstm_model.add(Dropout(0.2)) lstm_model.add(LSTM(units=50, return_sequences=False)) lstm_model.add(Dropout(0.2)) lstm_model.add(Dense(units=1)) lstm_model.compile(optimizer='adam', loss='mean_squared_error') lstm_model.fit(X_train, y_train, epochs=20, batch_size=32) lstm_predictions = lstm_model.predict(X_test) lstm_predictions = scaler.inverse_transform(lstm_predictions) lstm_metrics = evaluate_model_performance(y_test, lstm_predictions, "LSTM", company) # Add to performance metrics performance_metrics[company]["LSTM"] = lstm_metrics # Compare Models # Prepare DataFrame for comparison of RMSE and MAPE model_comparison = pd.DataFrame([ {"Model": model, "Company": company, "RMSE": metrics["RMSE"], "MAPE": metrics["MAPE"]} for company, models in performance_metrics.items() for model, metrics in models.items() ])
+
+# Display the model comparison print("\nModel Comparison:") print(model_comparison) # Plot comparison of RMSE and MAPE plt.figure(figsize=(12, 6)) # Plot RMSE plt.subplot(1, 2, 1) sns.barplot(data=model_comparison, x="Model", y="RMSE", hue="Company") plt.title("Comparison of RMSE for Different Models") # Plot MAPE plt.subplot(1, 2, 2) sns.barplot(data=model_comparison, x="Model", y="MAPE", hue="Company") plt.title("Comparison of MAPE for Different Models") plt.tight_layout() plt.show()
+
+
